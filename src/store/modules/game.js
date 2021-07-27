@@ -18,25 +18,29 @@ const mutations = {
 }
 
 const actions = {
-  fetchCategories: context => {
-    context.commit('setToggleDisableBtn', true)
-    GameAPI.getCategories()
-      .then(data => context.commit('setCategories', data))
-      .finally(() => context.commit('setToggleDisableBtn', false))
+  fetchCategories: async () => {
+    const result = await GameAPI.getCategories().then(data => data)
+    return result
   },
-  fetchQuestions: async ({ commit, state }) => {
+  fetchQuestions: async ({ commit, dispatch, state }) => {
+    commit('setToggleDisableBtn', true)
+    const categories = await dispatch('fetchCategories')
+    commit('setCategories', categories)
+
     state.categories.forEach(category => {
-      GameAPI.getQuestions(category.id)
+      GameAPI.getQuestions(category)
         .then(data => {
           commit('setQuestions', data)
         })
+        .finally(() => commit('setToggleDisableBtn', false))
     })
   }
 }
 
 const getters = {
   getCategories: state => state.categories,
-  getToggleDisableBtn: state => state.toggleDisableBtn
+  getToggleDisableBtn: state => state.toggleDisableBtn,
+  getQuestions: state => state.questions
 
 }
 

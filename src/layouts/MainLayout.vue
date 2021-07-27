@@ -5,7 +5,7 @@
       <q-toolbar>
 
         <q-toolbar-title class="absolute-center" >
-          Quasar App
+          Quasar Game
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
