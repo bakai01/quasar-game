@@ -1,0 +1,1 @@
+export const random = () => Math.round(Math.random() * 10)
