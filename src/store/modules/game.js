@@ -1,4 +1,5 @@
 import { GameAPI } from 'src/api'
+import { sortByValue } from '../../utils/sortByValue'
 
 const state = () => ({
   categories: [],
@@ -11,7 +12,7 @@ const mutations = {
   setToggleDisableBtn: (state, payload) => state.toggleDisableBtn = payload,
   setQuestions: (state, payload) => {
     const question = { ...payload }
-    question.clues = question.clues.slice(0, 5)
+    question.clues = sortByValue(question.clues)
     state.questions.push(question)
   }
 
