@@ -1,9 +1,11 @@
 import { GameAPI } from 'src/api'
+import { findCategory } from '../../utils/findCategory'
 import { sortByValue } from '../../utils/sortByValue'
 
 const state = () => ({
   categories: [],
   questions: [],
+  currentQuestion : {},
   toggleDisableBtn: false
 })
 
@@ -14,6 +16,11 @@ const mutations = {
     const question = { ...payload }
     question.clues = sortByValue(question.clues)
     state.questions.push(question)
+  },
+  setCurrentQuestion: (state, payload) => {
+    const category = findCategory(state.questions, payload.categoryId)
+    
+    state.currentQuestion = { ...category.clues.find(question => question.id === payload.questionId) }
   }
 
 }
