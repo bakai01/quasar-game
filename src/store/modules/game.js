@@ -22,7 +22,7 @@ const mutations = {
     
     state.currentQuestion = { ...category.clues.find(question => question.id === payload.questionId) }
   },
-  answerQuestion: (state, payload) => {
+  removeQuestion: (state, payload) => {
     state.questions.find(category => {
       if (category.id === payload.categoryId) {
         category.clues.find(question => {

@@ -22,8 +22,8 @@
     <q-dialog v-model="popupQuestion" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h4 text-center">{{ getCurrentQuestion.value }}</div>
-          <div class="text-h4 text-center">{{ timer }}</div>
+          <div class="text-h4 text-center">cost: {{ getCurrentQuestion.value }} points</div>
+          <div class="text-h4 text-center">{{ countTimer }}</div>
 
           <p class="popup__content">{{ getCurrentQuestion.question }}</p>
         </q-card-section>
@@ -56,24 +56,18 @@ export default {
   data: () => ({
     popupQuestion: false,
     address: "",
-    timer: 60
+    countTimer: 60,
+    timer: null
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion", "answerQuestion"]),
+    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion"]),
     setTimer () {
-      let id = setInterval(() => {
-        --this.timer
+      this.timer = setInterval(() => {
+        --this.countTimer
         
-        if (this.timer === 0) {
-          clearInterval(id)
-          this.resetTimer()
-        }
+        if (this.countTimer === 0) this.closePopupQuestion()
       }, 1000)
-    },
-    resetTimer() {
-      this.timer = 60
-      this.closePopupQuestion()
     },
     gameStart() {
       if (!this.getCategories.length) {
@@ -86,9 +80,12 @@ export default {
       this.setCurrentQuestion(args)
       this.openPopupQuestion()
       this.setTimer()
-      this.answerQuestion(args)
+      this.removeQuestion(args)
     },
     closePopupQuestion() {
+      clearInterval(this.timer)
+      this.address = ""
+      this.countTimer = 60
       this.popupQuestion = false
     },
     openPopupQuestion() {
