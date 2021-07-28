@@ -22,7 +22,10 @@
       </q-card>
     </q-dialog>
 
-     <IssueCompletionNotification v-model="alert" @close="closeAlert" />
+     <IssueCompletionNotification
+      v-model="alert"
+      @close="closeAlert"
+    />
 
     <q-btn
       color="black"
@@ -61,9 +64,7 @@ export default {
       }, 1000)
     },
     gameStart() {
-      if (!this.getCategories.length) {
-        this.fetchQuestions()
-      }
+      if (!this.getCategories.length) this.fetchQuestions()
     },
     pickQuestion(args) {
       this.setCurrentQuestion(args)

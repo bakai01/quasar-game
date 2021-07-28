@@ -30,6 +30,9 @@ const mutations = {
         })
       }
     })
+  },
+  isCorrectAnswer: (state, payload) => {
+    
   }
 
 }
