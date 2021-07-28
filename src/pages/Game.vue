@@ -11,12 +11,31 @@
             :key="question.id"
             class="game-row__btn"
             @click="pickQuestion(category.id, question.id)"
+            :disabled="!question.value"
           >
             {{ question.value }}
           </button>
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="popupQuestion" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h4 text-center">{{ getCurrentQuestion.value }}</div>
+
+          <p class="popup__content">{{ getCurrentQuestion.question }}</p>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="address" autofocus @keyup.enter="closePopupQuestion" />
+        </q-card-section>
+
+        <q-card-actions align="center" class="text-primary">
+          <q-btn color="primary" style="padding: 0 20px 0 20px" label="OK" @click="closePopupQuestion" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-btn
       color="black"
@@ -32,9 +51,13 @@ import { mapActions, mapGetters, mapMutations } from "vuex"
 
 export default {
   name: "PageIndex",
+  data: () => ({
+    popupQuestion: false,
+    address: ""
+  }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion"]),
+    ...mapMutations("storeGame", ["setCurrentQuestion", "answerQuestion"]),
     gameStart() {
       if (!this.getCategories.length) {
         this.fetchQuestions()
@@ -45,13 +68,25 @@ export default {
         categoryId,
         questionId
       })
+      this.openPopupQuestion()
+      this.answerQuestion({
+        categoryId,
+        questionId
+      })
+    },
+    closePopupQuestion() {
+      this.popupQuestion = false
+    },
+    openPopupQuestion() {
+      this.popupQuestion = true
     }
   },
   computed: {
     ...mapGetters("storeGame", [
       "getToggleDisableBtn",
       "getCategories",
-      "getQuestions"
+      "getQuestions",
+      "getCurrentQuestion"
     ])
   }
 }
@@ -97,5 +132,18 @@ export default {
       }
     }
   }
+}
+
+.text-h4 {
+  padding-bottom: 35px;
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.popup__content {
+  text-align: center;
+  width: 50%;
+  font-size: 1.1rem;
+  margin: 0 auto
 }
 </style>

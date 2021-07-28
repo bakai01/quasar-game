@@ -21,6 +21,15 @@ const mutations = {
     const category = findCategory(state.questions, payload.categoryId)
     
     state.currentQuestion = { ...category.clues.find(question => question.id === payload.questionId) }
+  },
+  answerQuestion: (state, payload) => {
+    state.questions.find(category => {
+      if (category.id === payload.categoryId) {
+        category.clues.find(question => {
+          if (question.id === payload.questionId) question.value = null
+        })
+      }
+    })
   }
 
 }
@@ -48,7 +57,8 @@ const actions = {
 const getters = {
   getCategories: state => state.categories,
   getToggleDisableBtn: state => state.toggleDisableBtn,
-  getQuestions: state => state.questions
+  getQuestions: state => state.questions,
+  getCurrentQuestion: state => state.currentQuestion,
 
 }
 
