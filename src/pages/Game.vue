@@ -23,6 +23,7 @@
       <q-card style="min-width: 350px">
         <q-card-section>
           <div class="text-h4 text-center">{{ getCurrentQuestion.value }}</div>
+          <div class="text-h4 text-center">{{ timer }}</div>
 
           <p class="popup__content">{{ getCurrentQuestion.question }}</p>
         </q-card-section>
@@ -43,6 +44,7 @@
       @click="gameStart"
       :disabled="getToggleDisableBtn"
     />
+
   </q-page>
 </template>
 
@@ -53,26 +55,38 @@ export default {
   name: "PageIndex",
   data: () => ({
     popupQuestion: false,
-    address: ""
+    address: "",
+    timer: 60
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
     ...mapMutations("storeGame", ["setCurrentQuestion", "answerQuestion"]),
+    setTimer () {
+      let id = setInterval(() => {
+        --this.timer
+        
+        if (this.timer === 0) {
+          clearInterval(id)
+          this.resetTimer()
+        }
+      }, 1000)
+    },
+    resetTimer() {
+      this.timer = 60
+      this.closePopupQuestion()
+    },
     gameStart() {
       if (!this.getCategories.length) {
         this.fetchQuestions()
       }
     },
     pickQuestion(categoryId, questionId) {
-      this.setCurrentQuestion({
-        categoryId,
-        questionId
-      })
+      const args = { categoryId, questionId }
+
+      this.setCurrentQuestion(args)
       this.openPopupQuestion()
-      this.answerQuestion({
-        categoryId,
-        questionId
-      })
+      this.setTimer()
+      this.answerQuestion(args)
     },
     closePopupQuestion() {
       this.popupQuestion = false
