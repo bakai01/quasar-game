@@ -5,10 +5,10 @@
 
     <QuestionDialog v-model="popupQuestion" :countTimer="countTimer" @close="closePopupQuestion" />
 
-     <IssueCompletionNotification
-      v-model="alert"
+    <IssueCompletionNotification
       :message="getMessage"
       @close="closeAlert"
+      :alert="alert"
     />
 
     <FetchGame
@@ -40,7 +40,7 @@ export default {
   data: () => ({
     popupQuestion: false,
     alert: false,
-    countTimer: 60,
+    countTimer: 5,
     timer: null,
     categoryId: null,
     questionId: null,
@@ -58,13 +58,25 @@ export default {
       "setTotalAnswers",
       "setRightAnswers",
       "setWrongAnswers",
+      "setTimeOver"
     ]),
-    setTimer () {
+    setTimer() {
       this.timer = setInterval(() => {
         --this.countTimer
-        
-        if (this.countTimer === 0) this.closePopupQuestion()
+
+        if (this.countTimer === 0) this.timeIsOver()
       }, 1000)
+    },
+    timeIsOver() {
+      clearInterval(this.timer)
+
+      this.setTimeOver()
+
+      this.incrementToStats()
+
+      this.openAlert()
+      this.countTimer = 5
+      this.popupQuestion = false
     },
     gameStart() {
       if (!this.getQuestions.length) this.fetchQuestions()
@@ -106,7 +118,7 @@ export default {
       this.incrementToStats()
 
       this.openAlert()
-      this.countTimer = 60
+      this.countTimer = 5
       this.popupQuestion = false
     },
     openPopupQuestion() {
@@ -129,9 +141,9 @@ export default {
     getMessage() {
       let message = ""
 
-       message = this.getAnswerIsCorrect
-        ? `Your answer is correct! You earned: ${this.getCurrentQuestion.value} points`
-        : `Your answer is wrong`
+      if (this.getAnswerIsCorrect === 'over') message = `Time is over!`
+      else if (this.getAnswerIsCorrect) message = `Your answer is correct! You earned: ${this.getCurrentQuestion.value} points`
+      else message = `Your answer is wrong! You've a minus: ${this.getCurrentQuestion.value} points`
 
       return message
     }

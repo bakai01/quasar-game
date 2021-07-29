@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :value="value">
+  <q-dialog :value="alert">
     <q-card>
 
       <q-card-section class="q-pt-none">
@@ -18,7 +18,7 @@
 export default {
   name: "IssueCompletionNotification",
   props: {
-    value: {
+    alert: {
       type: Boolean,
       default: false
     },

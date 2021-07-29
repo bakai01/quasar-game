@@ -45,11 +45,12 @@ const mutations = {
   isCorrectAnswer: (state, payload) => {
     const category = findCategory(state.questions, payload.categoryId)
 
-    const rightAnswer = category.clues.find(question => question.id === payload.questionId).answer
+    const rightAnswer = category?.clues?.find(question => question.id === payload.questionId).answer
 
     if (modifyLine(rightAnswer) === modifyLine(payload.answer)) state.answerIsCorrect = true
     else state.answerIsCorrect = false
   },
+  setTimeOver: state => state.answerIsCorrect = 'over',
   setPlayerName: (state, payload) => {
     state.playerName = payload
   },
