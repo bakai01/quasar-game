@@ -15,6 +15,7 @@
         </button>
       </div>
     </div>
+    <p class="game-point">Total points: {{ getPoints }}</p>
   </div>
 </template>
 
@@ -24,7 +25,7 @@ import { mapGetters } from "vuex"
 export default {
   name: "Game",
   computed: {
-    ...mapGetters('storeGame', ['getQuestions'])
+    ...mapGetters('storeGame', ['getQuestions', 'getPoints'])
   },
   methods: {
     emitQuestion(categoryId, questionId, value) {
@@ -73,6 +74,11 @@ export default {
         background-color: darken($green-13, 6);
       }
     }
+  }
+
+  &-point {
+    text-align: end;
+    padding-top: 25px;
   }
 }
 </style>
