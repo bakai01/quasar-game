@@ -19,11 +19,11 @@
         <q-tabs class="absolute-center">
         <q-tab 
           @click="$router.push('/game').catch(err => {})"
-          label="Игра"
+          label="Game"
         />
         <q-tab
           @click="$router.push('/stats').catch(err => {})"
-          label="Статистика"
+          label="Stats"
         />
       </q-tabs>
       </q-toolbar>

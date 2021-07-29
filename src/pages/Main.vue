@@ -30,7 +30,7 @@
 
     <q-btn
       color="black"
-      label="Начать игру"
+      label="Start game"
       @click="gameStart"
       :disabled="getToggleDisableBtn"
     />

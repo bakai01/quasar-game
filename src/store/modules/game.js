@@ -8,7 +8,9 @@ const state = () => ({
   questions: [],
   currentQuestion : {},
   toggleDisableBtn: false,
-  answerIsCorrect: null
+  answerIsCorrect: null,
+  points: 0,
+  playerName: ""
 })
 
 const mutations = {
@@ -40,6 +42,9 @@ const mutations = {
 
     if (modifyLine(rightAnswer) === modifyLine(payload.answer)) state.answerIsCorrect = true
     else state.answerIsCorrect = false
+  },
+  setPlayerName: (state, payload) => {
+    state.playerName = payload
   }
 
 }
@@ -69,7 +74,9 @@ const getters = {
   getToggleDisableBtn: state => state.toggleDisableBtn,
   getQuestions: state => state.questions,
   getCurrentQuestion: state => state.currentQuestion,
-  getAnswerIsCorrect: state => state.answerIsCorrect
+  getAnswerIsCorrect: state => state.answerIsCorrect,
+  getPoints: state => state.points,
+  getPlayerName: state => state.playerName
 
 }
 
