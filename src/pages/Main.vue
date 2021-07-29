@@ -24,8 +24,8 @@
 
      <IssueCompletionNotification
       v-model="alert"
-      @close="closeAlert"
       :message="getMessage"
+      @close="closeAlert"
     />
 
     <q-btn
@@ -109,10 +109,14 @@ export default {
       "getCurrentQuestion",
       "getAnswerIsCorrect"
     ]),
-    getMessage: function() {
-      return this.getAnswerIsCorrect
+    getMessage() {
+      let message = ""
+
+      message = this.getAnswerIsCorrect
         ? `Your answer is correct! You earned: ${this.getCurrentQuestion.value} points`
         : `Your answer is wrong`
+
+      return message
     }
   }  
 }
