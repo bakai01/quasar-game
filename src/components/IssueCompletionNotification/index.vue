@@ -3,7 +3,7 @@
     <q-card>
 
       <q-card-section class="q-pt-none">
-        Whatever
+        {{ message }}
       </q-card-section>
 
       <q-card-actions align="right">
@@ -21,6 +21,9 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    message: {
+      type: String
     }
   },
   methods: {

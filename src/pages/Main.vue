@@ -13,7 +13,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="address" autofocus @keyup.enter="closePopupQuestion" />
+          <q-input dense v-model="answer" autofocus @keyup.enter="closePopupQuestion" />
         </q-card-section>
 
         <q-card-actions align="center" class="text-primary">
@@ -25,6 +25,7 @@
      <IssueCompletionNotification
       v-model="alert"
       @close="closeAlert"
+      :message="getMessage"
     />
 
     <q-btn
@@ -49,13 +50,15 @@ export default {
   data: () => ({
     popupQuestion: false,
     alert: false,
-    address: "",
+    answer: "",
     countTimer: 60,
-    timer: null
+    timer: null,
+    categoryId: null,
+    questionId: null
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion"]),
+    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer"]),
     setTimer () {
       this.timer = setInterval(() => {
         --this.countTimer
@@ -67,6 +70,9 @@ export default {
       if (!this.getCategories.length) this.fetchQuestions()
     },
     pickQuestion(args) {
+      this.categoryId = args.categoryId
+      this.questionId = args.questionId
+
       this.setCurrentQuestion(args)
       this.openPopupQuestion()
       this.setTimer()
@@ -74,8 +80,15 @@ export default {
     },
     closePopupQuestion() {
       clearInterval(this.timer)
+
+      this.isCorrectAnswer({
+        categoryId: this.categoryId,
+        questionId: this.questionId,
+        answer: this.answer
+      })
+
       this.openAlert()
-      this.address = ""
+      this.answer = ""
       this.countTimer = 60
       this.popupQuestion = false
     },
@@ -93,9 +106,15 @@ export default {
     ...mapGetters("storeGame", [
       "getToggleDisableBtn",
       "getCategories",
-      "getCurrentQuestion"
-    ])
-  }
+      "getCurrentQuestion",
+      "getAnswerIsCorrect"
+    ]),
+    getMessage: function() {
+      return this.getAnswerIsCorrect
+        ? `Your answer is correct! You earned: ${this.getCurrentQuestion.value} points`
+        : `Your answer is wrong`
+    }
+  }  
 }
 </script>
 

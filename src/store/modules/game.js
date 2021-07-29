@@ -1,12 +1,14 @@
 import { GameAPI } from 'src/api'
 import { findCategory } from '../../utils/findCategory'
 import { sortByValue } from '../../utils/sortByValue'
+import { modifyLine } from '../../utils/modifyLine'
 
 const state = () => ({
   categories: [],
   questions: [],
   currentQuestion : {},
-  toggleDisableBtn: false
+  toggleDisableBtn: false,
+  answerIsCorrect: null
 })
 
 const mutations = {
@@ -32,7 +34,12 @@ const mutations = {
     })
   },
   isCorrectAnswer: (state, payload) => {
-    
+    const category = findCategory(state.questions, payload.categoryId)
+
+    const rightAnswer = category.clues.find(question => question.id === payload.questionId).answer
+
+    if (modifyLine(rightAnswer) === modifyLine(payload.answer)) state.answerIsCorrect = true
+    else state.answerIsCorrect = false
   }
 
 }
@@ -62,6 +69,7 @@ const getters = {
   getToggleDisableBtn: state => state.toggleDisableBtn,
   getQuestions: state => state.questions,
   getCurrentQuestion: state => state.currentQuestion,
+  getAnswerIsCorrect: state => state.answerIsCorrect
 
 }
 

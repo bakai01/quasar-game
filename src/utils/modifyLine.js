@@ -1,0 +1,1 @@
+export const modifyLine = str => str.toLowerCase().replace(/[^a-zа-яё]/gi, '')
