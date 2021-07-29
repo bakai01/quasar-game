@@ -1,5 +1,4 @@
 <template>
-  <q-dialog :value="value" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
         <div class="text-h4 text-center">
@@ -30,7 +29,6 @@
         />
       </q-card-actions>
     </q-card>
-  </q-dialog>
 </template>
 
 <script>
@@ -42,7 +40,6 @@ export default {
     answer: ""
   }),
   props: {
-    value: { type: Boolean, default: false },
     countTimer: { type: Number, required: true }
   },
   computed: {
@@ -50,11 +47,11 @@ export default {
   },
   methods: {
     close() {
-      if (this.$refs.answerRefName.validate()) {
-        this.$emit("close", this.answer)
-        this.answer = ""
-      }
+      if (this.$refs.answerRefName.validate()) this.$emit("close", this.answer)
     }
+  },
+  destroyed() {
+    this.answer = ""
   }
 }
 </script>

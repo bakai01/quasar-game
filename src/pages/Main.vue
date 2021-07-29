@@ -3,7 +3,9 @@
 
     <Game @choiceQuestion="pickQuestion" />
 
-    <QuestionDialog v-model="popupQuestion" :countTimer="countTimer" @close="closePopupQuestion" />
+    <q-dialog v-model="popupQuestion" persistent>
+      <QuestionDialog :countTimer="countTimer" @close="closePopupQuestion" />
+    </q-dialog>
 
     <IssueCompletionNotification
       :message="getMessage"
