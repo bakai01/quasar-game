@@ -9,8 +9,11 @@ const state = () => ({
   currentQuestion : {},
   toggleDisableBtn: false,
   answerIsCorrect: null,
+  playerName: "",
+  totalAnswers: 0,
+  rightAnswers: 0,
+  wrongAnswers: 0,
   points: 0,
-  playerName: ""
 })
 
 const mutations = {
@@ -52,6 +55,9 @@ const mutations = {
   },
   plusPoints: (state, payload) => state.points += payload,
   minusPoints: (state, payload) => state.points -= payload,
+  setTotalAnswers: state => state.totalAnswers++,
+  setRightAnswers: state => state.rightAnswers++,
+  setWrongAnswers: state => state.wrongAnswers++,
 
 }
 
@@ -76,12 +82,15 @@ const actions = {
 }
 
 const getters = {
-  getToggleDisableBtn: state => state.toggleDisableBtn,
-  getQuestions: state => state.questions,
-  getCurrentQuestion: state => state.currentQuestion,
-  getAnswerIsCorrect: state => state.answerIsCorrect,
-  getPoints: state => state.points,
-  getPlayerName: state => state.playerName
+  getToggleDisableBtn:   state => state.toggleDisableBtn,
+  getQuestions:          state => state.questions,
+  getCurrentQuestion:    state => state.currentQuestion,
+  getAnswerIsCorrect:    state => state.answerIsCorrect,
+  getPoints:             state => state.points,
+  getPlayerName:         state => state.playerName,
+  getTotalAnswers:       state => state.totalAnswers,
+  getRightAnswers:       state => state.rightAnswers,
+  getWrongAnswers:       state => state.wrongAnswers,
 
 }
 

@@ -57,7 +57,17 @@ export default {
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer", "setQuestions", "plusPoints", "minusPoints"]),
+    ...mapMutations("storeGame", [
+      "setCurrentQuestion", 
+      "removeQuestion", 
+      "isCorrectAnswer", 
+      "setQuestions", 
+      "plusPoints", 
+      "minusPoints",
+      "setTotalAnswers",
+      "setRightAnswers",
+      "setWrongAnswers",
+    ]),
     setTimer () {
       this.timer = setInterval(() => {
         --this.countTimer
@@ -81,6 +91,18 @@ export default {
       this.setTimer()
       this.removeQuestion(args)
     },
+    incrementToStats() {
+      if (this.getAnswerIsCorrect) {
+        this.plusPoints(this.value)
+        this.setTotalAnswers()
+        this.setRightAnswers()
+      }
+      else {
+        this.minusPoints(this.value)
+        this.setTotalAnswers()
+        this.setWrongAnswers()
+      }
+    },
     closePopupQuestion() {
       clearInterval(this.timer)
 
@@ -90,9 +112,7 @@ export default {
         answer: this.answer
       })
 
-      this.getAnswerIsCorrect
-        ? this.plusPoints(this.value)
-        : this.minusPoints(this.value)
+      this.incrementToStats()
 
       this.openAlert()
       this.answer = ""
