@@ -6,7 +6,6 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/auth',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/game', component: () => import('src/pages/Main.vue') },

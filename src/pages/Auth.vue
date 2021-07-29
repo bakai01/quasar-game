@@ -37,6 +37,8 @@ export default {
     playGame() {
       if(this.$refs.playerRefName.validate()) {
         this.$router.push('/game')
+        console.log(this.name)
+        localStorage.setItem('playerName', this.name)
         this.setPlayerName(this.name)
       }
     }

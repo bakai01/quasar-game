@@ -33,11 +33,14 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'MainLayout',
+  methods: { ...mapMutations('storeGame', ['setPlayerName']) },
   mounted() {
-    
+    if (!localStorage.getItem('playerName')) this.$router.push('/auth')
+    else this.setPlayerName(localStorage.getItem('playerName'))
   }
 }
 </script>
