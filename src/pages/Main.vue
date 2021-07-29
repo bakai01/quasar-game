@@ -3,24 +3,7 @@
 
     <Game @choiceQuestion="pickQuestion" />
 
-    <q-dialog v-model="popupQuestion" persistent>
-      <q-card style="min-width: 350px">
-        <q-card-section>
-          <div class="text-h4 text-center">cost: {{ getCurrentQuestion.value }} points</div>
-          <div class="text-h4 text-center">{{ countTimer }}</div>
-
-          <p class="popup__content">{{ getCurrentQuestion.question }}</p>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense v-model="answer" autofocus @keyup.enter="closePopupQuestion" />
-        </q-card-section>
-
-        <q-card-actions align="center" class="text-primary">
-          <q-btn color="primary" style="padding: 0 20px 0 20px" label="OK" @click="closePopupQuestion" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <QuestionDialog v-model="popupQuestion" :countTimer="countTimer" @close="closePopupQuestion" />
 
      <IssueCompletionNotification
       v-model="alert"
@@ -28,8 +11,16 @@
       @close="closeAlert"
     />
 
-    <FetchGame v-show="!this.getQuestions.length" :isDisabled="getToggleDisableBtn" @eventFetchClick="gameStart" />
-    <StopGame v-show="this.getQuestions.length" @eventStopClick="gameStop" />
+    <FetchGame
+      v-show="!this.getQuestions.length"
+      :isDisabled="getToggleDisableBtn"
+      @eventFetchClick="gameStart"
+    />
+
+    <StopGame
+      v-show="this.getQuestions.length"
+      @eventStopClick="gameStop"
+    />
 
   </q-page>
 </template>
@@ -38,17 +29,17 @@
 import { mapActions, mapGetters, mapMutations } from "vuex"
 
 import Game from "components/Game"
+import QuestionDialog from "components/QuestionDialog"
 import IssueCompletionNotification from "components/IssueCompletionNotification"
 import FetchGame from "components/btns/FetchGame"
 import StopGame from "components/btns/StopGame"
 
 export default {
   name: "Main",
-  components: { Game, IssueCompletionNotification, FetchGame, StopGame }, 
+  components: { Game, IssueCompletionNotification, FetchGame, StopGame, QuestionDialog }, 
   data: () => ({
     popupQuestion: false,
     alert: false,
-    answer: "",
     countTimer: 60,
     timer: null,
     categoryId: null,
@@ -103,19 +94,18 @@ export default {
         this.setWrongAnswers()
       }
     },
-    closePopupQuestion() {
+    closePopupQuestion(answer) {
       clearInterval(this.timer)
 
       this.isCorrectAnswer({
         categoryId: this.categoryId,
         questionId: this.questionId,
-        answer: this.answer
+        answer
       })
 
       this.incrementToStats()
 
       this.openAlert()
-      this.answer = ""
       this.countTimer = 60
       this.popupQuestion = false
     },
@@ -148,18 +138,3 @@ export default {
   }  
 }
 </script>
-
-<style lang="scss" scoped>
-.text-h4 {
-  padding-bottom: 35px;
-  font-weight: 600;
-  font-size: 40px;
-}
-
-.popup__content {
-  text-align: center;
-  width: 50%;
-  font-size: 1.1rem;
-  margin: 0 auto
-}
-</style>
