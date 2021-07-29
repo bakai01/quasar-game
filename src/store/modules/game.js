@@ -17,9 +17,13 @@ const mutations = {
   setCategories: (state, payload) => state.categories = payload.map(category => category.id),
   setToggleDisableBtn: (state, payload) => state.toggleDisableBtn = payload,
   setQuestions: (state, payload) => {
-    const question = { ...payload }
-    question.clues = sortByValue(question.clues)
-    state.questions.push(question)
+    if(!payload) state.questions = []
+
+    else {
+      const question = { ...payload }
+      question.clues = sortByValue(question?.clues)
+      state.questions.push(question)
+    }
   },
   setCurrentQuestion: (state, payload) => {
     const category = findCategory(state.questions, payload.categoryId)
@@ -70,7 +74,6 @@ const actions = {
 }
 
 const getters = {
-  getCategories: state => state.categories,
   getToggleDisableBtn: state => state.toggleDisableBtn,
   getQuestions: state => state.questions,
   getCurrentQuestion: state => state.currentQuestion,

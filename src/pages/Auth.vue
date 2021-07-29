@@ -36,8 +36,8 @@ export default {
     ...mapMutations('storeGame', ['setPlayerName']),
     playGame() {
       if(this.$refs.playerRefName.validate()) {
-      this.$router.push('/game')
-      this.setPlayerName(this.name)
+        this.$router.push('/game')
+        this.setPlayerName(this.name)
       }
     }
   }

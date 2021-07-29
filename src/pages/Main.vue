@@ -28,12 +28,8 @@
       @close="closeAlert"
     />
 
-    <q-btn
-      color="black"
-      label="Start game"
-      @click="gameStart"
-      :disabled="getToggleDisableBtn"
-    />
+    <FetchGame v-if="!this.getQuestions.length" :isDisabled="getToggleDisableBtn" @eventFetchClick="gameStart" />
+    <StopGame v-else @eventStopClick="gameStop" />
 
   </q-page>
 </template>
@@ -43,10 +39,12 @@ import { mapActions, mapGetters, mapMutations } from "vuex"
 
 import Game from "components/Game"
 import IssueCompletionNotification from "components/IssueCompletionNotification"
+import FetchGame from "components/btns/FetchGame"
+import StopGame from "components/btns/StopGame"
 
 export default {
   name: "Main",
-  components: { Game, IssueCompletionNotification }, 
+  components: { Game, IssueCompletionNotification, FetchGame, StopGame }, 
   data: () => ({
     popupQuestion: false,
     alert: false,
@@ -58,7 +56,7 @@ export default {
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer"]),
+    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer", "setQuestions"]),
     setTimer () {
       this.timer = setInterval(() => {
         --this.countTimer
@@ -67,7 +65,10 @@ export default {
       }, 1000)
     },
     gameStart() {
-      if (!this.getCategories.length) this.fetchQuestions()
+      if (!this.getQuestions.length) this.fetchQuestions()
+    },
+    gameStop() {
+      this.setQuestions(false)
     },
     pickQuestion(args) {
       this.categoryId = args.categoryId
@@ -105,14 +106,14 @@ export default {
   computed: {
     ...mapGetters("storeGame", [
       "getToggleDisableBtn",
-      "getCategories",
       "getCurrentQuestion",
-      "getAnswerIsCorrect"
+      "getAnswerIsCorrect",
+      "getQuestions"
     ]),
     getMessage() {
       let message = ""
 
-      message = this.getAnswerIsCorrect
+       message = this.getAnswerIsCorrect
         ? `Your answer is correct! You earned: ${this.getCurrentQuestion.value} points`
         : `Your answer is wrong`
 
