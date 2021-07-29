@@ -36,6 +36,9 @@
 
 export default {
   name: 'MainLayout',
+  mounted() {
+    
+  }
 }
 </script>
 

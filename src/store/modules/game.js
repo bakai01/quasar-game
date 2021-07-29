@@ -49,7 +49,9 @@ const mutations = {
   },
   setPlayerName: (state, payload) => {
     state.playerName = payload
-  }
+  },
+  plusPoints: (state, payload) => state.points += payload,
+  minusPoints: (state, payload) => state.points -= payload,
 
 }
 

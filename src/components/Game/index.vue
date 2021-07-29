@@ -8,7 +8,7 @@
           v-for="question in category.clues"
           :key="question.id"
           class="game-row__btn"
-          @click="emitQuestion(category.id, question.id)"
+          @click="emitQuestion(category.id, question.id, question.value)"
           :disabled="!question.value"
         >
           {{ question.value }}
@@ -27,8 +27,8 @@ export default {
     ...mapGetters('storeGame', ['getQuestions'])
   },
   methods: {
-    emitQuestion(categoryId, questionId) {
-      this.$emit('choiceQuestion', { categoryId, questionId })
+    emitQuestion(categoryId, questionId, value) {
+      this.$emit('choiceQuestion', { categoryId, questionId, value })
     }
   }
 }

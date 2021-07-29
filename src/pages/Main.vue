@@ -28,8 +28,8 @@
       @close="closeAlert"
     />
 
-    <FetchGame v-if="!this.getQuestions.length" :isDisabled="getToggleDisableBtn" @eventFetchClick="gameStart" />
-    <StopGame v-else @eventStopClick="gameStop" />
+    <FetchGame v-show="!this.getQuestions.length" :isDisabled="getToggleDisableBtn" @eventFetchClick="gameStart" />
+    <StopGame v-show="this.getQuestions.length" @eventStopClick="gameStop" />
 
   </q-page>
 </template>
@@ -52,11 +52,12 @@ export default {
     countTimer: 60,
     timer: null,
     categoryId: null,
-    questionId: null
+    questionId: null,
+    value: 0
   }),
   methods: {
     ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
-    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer", "setQuestions"]),
+    ...mapMutations("storeGame", ["setCurrentQuestion", "removeQuestion", "isCorrectAnswer", "setQuestions", "plusPoints", "minusPoints"]),
     setTimer () {
       this.timer = setInterval(() => {
         --this.countTimer
@@ -73,6 +74,7 @@ export default {
     pickQuestion(args) {
       this.categoryId = args.categoryId
       this.questionId = args.questionId
+      this.value      = args.value
 
       this.setCurrentQuestion(args)
       this.openPopupQuestion()
@@ -87,6 +89,10 @@ export default {
         questionId: this.questionId,
         answer: this.answer
       })
+
+      this.getAnswerIsCorrect
+        ? this.plusPoints(this.value)
+        : this.minusPoints(this.value)
 
       this.openAlert()
       this.answer = ""
