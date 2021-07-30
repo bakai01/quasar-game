@@ -47,7 +47,7 @@ export default {
     value: 0
   }),
   methods: {
-    ...mapActions("storeGame", ["fetchCategories", "fetchQuestions"]),
+    ...mapActions("storeGame", ["fetchQuestions"]),
     ...mapMutations("storeGame", [
       "setCurrentQuestion", 
       "removeQuestion", 
@@ -57,8 +57,7 @@ export default {
       "minusPoints",
       "setTotalAnswers",
       "setRightAnswers",
-      "setWrongAnswers",
-      "setTimeOver"
+      "setWrongAnswers"
     ]),
     gameStart() {
       if (!this.getQuestions.length) this.fetchQuestions()

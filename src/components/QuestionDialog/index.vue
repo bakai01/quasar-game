@@ -4,7 +4,7 @@
         <div class="text-h4 text-center">
           cost: {{ getCurrentQuestion.value }} points
         </div>
-        <div class="text-h4 text-center">{{ countTimer }}</div>
+        <div :class="{ 'red': timeWillRunOutSoon }" class="text-h4 text-center">{{ countTimer }}</div>
 
         <p class="popup__content">{{ getCurrentQuestion.question }}</p>
       </q-card-section>
@@ -38,8 +38,9 @@ export default {
   name: "QuestionDialog",
   data: () => ({
     answer: "",
-    countTimer: 5,
-    timer: null
+    countTimer: 15,
+    timer: null,
+    timeWillRunOutSoon: false
   }),
   computed: {
     ...mapGetters("storeGame", ["getCurrentQuestion"])
@@ -57,16 +58,21 @@ export default {
         --this.countTimer
 
       if (this.countTimer === 0) this.timeIsOver()
+      if (this.countTimer <= 10 ) this.setTimeWillRunOutSoon()
       }, 1000)
     },
     timeIsOver() {
       clearInterval(this.timer)
       this.$emit('over', this.answer)
       this.setTimeOver()
+    },
+    setTimeWillRunOutSoon() {
+      this.timeWillRunOutSoon = true
     }
   },
   beforeDestroy() {
     this.answer = ""
+    this.timeWillRunOutSoon = false
   },
   mounted() {
     this.setTimer()
@@ -85,5 +91,9 @@ export default {
   width: 50%;
   font-size: 1.1rem;
   margin: 0 auto
+}
+
+.red {
+  color: red
 }
 </style>
