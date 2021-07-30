@@ -37,10 +37,17 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'MainLayout',
-  methods: { ...mapMutations('storeGame', ['setPlayerName']) },
+  methods: {
+    ...mapMutations('storeGame', ['setPlayerName'])
+  },
   mounted() {
-    if (!localStorage.getItem('playerName')) this.$router.push('/auth')
-    else this.setPlayerName(localStorage.getItem('playerName'))
+    if (!localStorage.getItem('playerName')) {
+      this.$router.push('/auth')
+    }
+    else {
+      this.setPlayerName(localStorage.getItem('playerName'))
+      this.$router.push('/game').catch(err => {})
+    }
   }
 }
 </script>

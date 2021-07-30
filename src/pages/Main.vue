@@ -109,6 +109,9 @@ export default {
       this.alert = true
     }
   },
+  mounted() {
+    if (!this.getQuestions.length) this.fetchQuestions()
+  },
   computed: {
     ...mapGetters("storeGame", [
       "getToggleDisableBtn",

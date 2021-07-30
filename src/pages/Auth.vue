@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   data: () => ({
@@ -34,13 +34,18 @@ export default {
   }),
   methods: {
     ...mapMutations('storeGame', ['setPlayerName']),
+    ...mapGetters('storeGame', ['getQuestions']),
+    ...mapActions('storeGame', ['fetchQuestions']),
     playGame() {
       if(this.$refs.playerRefName.validate()) {
-        this.$router.push('/game')
+        this.$router.push('/game').catch(err => {})
         localStorage.setItem('playerName', this.name)
         this.setPlayerName(this.name)
       }
     }
+  },
+  mounted() {
+    if (!this.getQuestions.length) this.fetchQuestions()
   }
 }
 </script>

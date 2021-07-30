@@ -48,6 +48,7 @@ export default {
   }),
   computed: {
     ...mapGetters("storeGame", ["getCurrentQuestion"])
+    // TODO wordSecond = computed
   },
   methods: {
     ...mapMutations("storeGame", ["setTimeOver"]),
