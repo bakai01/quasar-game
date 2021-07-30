@@ -16,5 +16,10 @@ export const GameAPI = {
     return instance.get(`category?id=${idCategory}`)
       .then(resp => resp.data)
       .catch(err => alert(err))
+  },
+  getClues: () => {
+    return instance.get(`clues`)
+      .then(resp => resp.data)
+      .catch(err => alert(err))
   }
 }

@@ -79,6 +79,29 @@ const actions = {
         })
         .finally(() => commit('setToggleDisableBtn', false))
     })
+  },
+  fetchClues: () => {
+
+    const cluArr = []
+
+    GameAPI.getClues().then(data => {
+      const res = data.sort((a, b) => a.category_id > b.category_id ? 1 : -1)
+
+      // res.reduce((previousValue, currentItem, index, arr) => {
+      //   if (previousValue.category.id === currentItem.category.id) cluArr.push(currentItem)
+      //   return currentItem
+      // })
+      res.forEach(el => console.log(el.category_id))
+      // for (let i = 0; i < res.length; i++) {
+      //   // console.log(res[i - 1])
+      //   if (res[i].category_id === res[i + 1].category_id) {
+      //     console.log(res[i])
+      //     cluArr.push(res[i - 1])
+      //   }
+      //   else return
+      // }
+    })
+    // console.log(cluArr)
   }
 }
 

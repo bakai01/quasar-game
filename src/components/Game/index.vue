@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 
 export default {
   name: "Game",
@@ -28,9 +28,13 @@ export default {
     ...mapGetters('storeGame', ['getQuestions', 'getPoints'])
   },
   methods: {
+    ...mapActions("storeGame", ["fetchClues"]),
     emitQuestion(categoryId, questionId, value) {
       this.$emit('choiceQuestion', { categoryId, questionId, value })
     }
+  },
+  mounted() {
+    this.fetchClues()
   }
 }
 </script>
