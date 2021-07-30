@@ -32,26 +32,44 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters, mapMutations } from "vuex"
 
 export default {
   name: "QuestionDialog",
   data: () => ({
-    answer: ""
+    answer: "",
+    countTimer: 5,
+    timer: null
   }),
-  props: {
-    countTimer: { type: Number, required: true }
-  },
   computed: {
     ...mapGetters("storeGame", ["getCurrentQuestion"])
   },
   methods: {
+    ...mapMutations("storeGame", ["setTimeOver"]),
     close() {
-      if (this.$refs.answerRefName.validate()) this.$emit("close", this.answer)
+      if (this.$refs.answerRefName.validate()) {
+        clearInterval(this.timer)
+        this.$emit("close", this.answer)
+      }
+    },
+    setTimer() {
+      this.timer = setInterval(() => {
+        --this.countTimer
+
+      if (this.countTimer === 0) this.timeIsOver()
+      }, 1000)
+    },
+    timeIsOver() {
+      clearInterval(this.timer)
+      this.$emit('over', this.answer)
+      this.setTimeOver()
     }
   },
-  destroyed() {
+  beforeDestroy() {
     this.answer = ""
+  },
+  mounted() {
+    this.setTimer()
   }
 }
 </script>

@@ -4,7 +4,7 @@
     <Game @choiceQuestion="pickQuestion" />
 
     <q-dialog v-model="popupQuestion" persistent>
-      <QuestionDialog :countTimer="countTimer" @close="closePopupQuestion" />
+      <QuestionDialog @close="closePopupQuestion" @over="closePopupQuestion" />
     </q-dialog>
 
     <IssueCompletionNotification
@@ -42,8 +42,6 @@ export default {
   data: () => ({
     popupQuestion: false,
     alert: false,
-    countTimer: 5,
-    timer: null,
     categoryId: null,
     questionId: null,
     value: 0
@@ -62,24 +60,6 @@ export default {
       "setWrongAnswers",
       "setTimeOver"
     ]),
-    setTimer() {
-      this.timer = setInterval(() => {
-        --this.countTimer
-
-        if (this.countTimer === 0) this.timeIsOver()
-      }, 1000)
-    },
-    timeIsOver() {
-      clearInterval(this.timer)
-
-      this.setTimeOver()
-
-      this.incrementToStats()
-
-      this.openAlert()
-      this.countTimer = 5
-      this.popupQuestion = false
-    },
     gameStart() {
       if (!this.getQuestions.length) this.fetchQuestions()
     },
@@ -93,7 +73,6 @@ export default {
 
       this.setCurrentQuestion(args)
       this.openPopupQuestion()
-      this.setTimer()
       this.removeQuestion(args)
     },
     incrementToStats() {
@@ -109,7 +88,6 @@ export default {
       }
     },
     closePopupQuestion(answer) {
-      clearInterval(this.timer)
 
       this.isCorrectAnswer({
         categoryId: this.categoryId,
@@ -120,7 +98,6 @@ export default {
       this.incrementToStats()
 
       this.openAlert()
-      this.countTimer = 5
       this.popupQuestion = false
     },
     openPopupQuestion() {
