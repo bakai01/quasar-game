@@ -41,7 +41,6 @@ export default {
 
 <style lang="scss" scoped>
 .game {
-  padding: 150px;
 
   &-row {
     display: flex;

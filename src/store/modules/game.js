@@ -82,26 +82,39 @@ const actions = {
   },
   fetchClues: () => {
 
+    const cluObj = {}
     const cluArr = []
 
     GameAPI.getClues().then(data => {
-      const res = data.sort((a, b) => a.category_id > b.category_id ? 1 : -1)
+      data.forEach(el => {
+        if (!cluObj[el.category_id]) {
+          cluObj[el.category_id] = { title: el.category.title }
+          cluObj[el.category_id].clues = []
+          cluObj[el.category_id].clues.push({
+            question: el.question,
+            answer: el.answer,
+            value: el.value,
+          })
+        }
+        else {
+          cluObj[el.category_id].clues.push({
+            question: el.question,
+            answer: el.answer,
+            value: el.value,
+          })
+        }
+      })
 
-      // res.reduce((previousValue, currentItem, index, arr) => {
-      //   if (previousValue.category.id === currentItem.category.id) cluArr.push(currentItem)
-      //   return currentItem
-      // })
-      res.forEach(el => console.log(el.category_id))
-      // for (let i = 0; i < res.length; i++) {
-      //   // console.log(res[i - 1])
-      //   if (res[i].category_id === res[i + 1].category_id) {
-      //     console.log(res[i])
-      //     cluArr.push(res[i - 1])
-      //   }
-      //   else return
-      // }
+      for (let key in cluObj) {
+        if (cluObj[key].clues.length === 5) {
+          cluArr.push({
+            id: key,
+            title: cluObj[key].title,
+            clues: [ ...cluObj[key].clues ]
+          })
+        }
+      }
     })
-    // console.log(cluArr)
   }
 }
 
