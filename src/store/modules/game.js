@@ -1,6 +1,10 @@
 import { GameAPI } from 'src/api'
 import { findCategory } from '../../utils/findCategory'
 import { modifyLine } from '../../utils/modifyLine'
+import { shapeIntoOneObj } from '../../utils/shapeIntoOneObj'
+import { convertObjToArr } from '../../utils/convertObjToArr'
+import { chooseCompleteQuestions } from '../../utils/chooseCompleteQuestions'
+import { getFiveRandomItems } from '../../utils/getFiveRandomItems'
 
 const state = () => ({
   questions: [],
@@ -20,7 +24,12 @@ const mutations = {
     if (!payload) state.questions = []
 
     else {
-      state.questions = [...payload]
+      const cluObj = shapeIntoOneObj(payload)
+
+      const cluArr = convertObjToArr(cluObj)
+
+      const newArr = chooseCompleteQuestions(cluArr)
+      state.questions = [...getFiveRandomItems(newArr)]
     }
   },
   setCurrentQuestion: (state, payload) => {
@@ -59,50 +68,8 @@ const mutations = {
 
 const actions = {
   fetchClues: ({ commit }) => {
-    const cluObj = {}
-    const cluArr = []
-    const newArr = []
 
-    GameAPI.getClues().then(data => {
-      data.forEach(el => {
-        if (!cluObj[el.category_id]) {
-          cluObj[el.category_id] = { title: el.category.title }
-          cluObj[el.category_id].clues = []
-          cluObj[el.category_id].clues.push({
-            question: el.question,
-            answer: el.answer,
-            value: el.value,
-          })
-        }
-        else {
-          cluObj[el.category_id].clues.push({
-            question: el.question,
-            answer: el.answer,
-            value: el.value,
-          })
-        }
-      })
-
-      for (let key in cluObj) {
-        if (cluObj[key].clues.length === 5) {
-          cluArr.push({
-            id: key,
-            title: cluObj[key].title,
-            clues: [...cluObj[key].clues]
-          })
-        }
-      }
-
-
-      outer: for (let i = 0; i < cluArr.length; i++) {
-        for (let j = 0; j < cluArr[i].clues.length; j++) {
-          if (!cluArr[i].clues[j].value) continue outer
-        }
-        newArr.push(cluArr[i])
-      }
-
-      commit('setQuestions', newArr.sort(() => 0.5 - Math.random()).slice(0, 5))
-    })
+    GameAPI.getClues().then(data => commit('setQuestions',data))
   }
 }
 
