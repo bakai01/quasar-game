@@ -1,12 +1,10 @@
 import { GameAPI } from 'src/api'
 import { findCategory } from '../../utils/findCategory'
-import { sortByValue } from '../../utils/sortByValue'
 import { modifyLine } from '../../utils/modifyLine'
 
 const state = () => ({
-  categories: [],
   questions: [],
-  currentQuestion : {},
+  currentQuestion: {},
   toggleDisableBtn: false,
   answerIsCorrect: null,
   playerName: "",
@@ -17,20 +15,17 @@ const state = () => ({
 })
 
 const mutations = {
-  setCategories: (state, payload) => state.categories = payload.map(category => category.id),
   setToggleDisableBtn: (state, payload) => state.toggleDisableBtn = payload,
   setQuestions: (state, payload) => {
-    if(!payload) state.questions = []
+    if (!payload) state.questions = []
 
     else {
-      const question = { ...payload }
-      question.clues = sortByValue(question?.clues)
-      state.questions.push(question)
+      state.questions = [...payload]
     }
   },
   setCurrentQuestion: (state, payload) => {
     const category = findCategory(state.questions, payload.categoryId)
-    
+
     state.currentQuestion = { ...category.clues.find(question => question.id === payload.questionId) }
   },
   removeQuestion: (state, payload) => {
@@ -63,27 +58,10 @@ const mutations = {
 }
 
 const actions = {
-  fetchCategories: async () => {
-    const result = await GameAPI.getCategories().then(data => data)
-    return result
-  },
-  fetchQuestions: async ({ commit, dispatch, state }) => {
-    commit('setToggleDisableBtn', true)
-    const categories = await dispatch('fetchCategories')
-    commit('setCategories', categories)
-
-    state.categories.forEach(category => {
-      GameAPI.getQuestions(category)
-        .then(data => {
-          commit('setQuestions', data)
-        })
-        .finally(() => commit('setToggleDisableBtn', false))
-    })
-  },
-  fetchClues: () => {
-
+  fetchClues: ({ commit }) => {
     const cluObj = {}
     const cluArr = []
+    const newArr = []
 
     GameAPI.getClues().then(data => {
       data.forEach(el => {
@@ -110,24 +88,34 @@ const actions = {
           cluArr.push({
             id: key,
             title: cluObj[key].title,
-            clues: [ ...cluObj[key].clues ]
+            clues: [...cluObj[key].clues]
           })
         }
       }
+
+
+      outer: for (let i = 0; i < cluArr.length; i++) {
+        for (let j = 0; j < cluArr[i].clues.length; j++) {
+          if (!cluArr[i].clues[j].value) continue outer
+        }
+        newArr.push(cluArr[i])
+      }
+
+      commit('setQuestions', newArr.sort(() => 0.5 - Math.random()).slice(0, 5))
     })
   }
 }
 
 const getters = {
-  getToggleDisableBtn:   state => state.toggleDisableBtn,
-  getQuestions:          state => state.questions,
-  getCurrentQuestion:    state => state.currentQuestion,
-  getAnswerIsCorrect:    state => state.answerIsCorrect,
-  getPoints:             state => state.points,
-  getPlayerName:         state => state.playerName,
-  getTotalAnswers:       state => state.totalAnswers,
-  getRightAnswers:       state => state.rightAnswers,
-  getWrongAnswers:       state => state.wrongAnswers,
+  getToggleDisableBtn: state => state.toggleDisableBtn,
+  getQuestions: state => state.questions,
+  getCurrentQuestion: state => state.currentQuestion,
+  getAnswerIsCorrect: state => state.answerIsCorrect,
+  getPoints: state => state.points,
+  getPlayerName: state => state.playerName,
+  getTotalAnswers: state => state.totalAnswers,
+  getRightAnswers: state => state.rightAnswers,
+  getWrongAnswers: state => state.wrongAnswers,
 
 }
 

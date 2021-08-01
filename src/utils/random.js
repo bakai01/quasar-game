@@ -1,1 +1,0 @@
-export const random = () => Math.round(Math.random() * (1000 - 1 + 1) + 1)
