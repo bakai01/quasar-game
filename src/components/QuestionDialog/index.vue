@@ -43,12 +43,13 @@ export default {
     answer: "",
     countTimer: 15,
     timer: null,
-    wordSecond: "секунд",
     timeWillRunOutSoon: false
   }),
   computed: {
-    ...mapGetters("storeGame", ["getCurrentQuestion"])
-    // TODO wordSecond = computed
+    ...mapGetters("storeGame", ["getCurrentQuestion"]),
+    wordSecond() {
+      return whichWord(this.countTimer)
+    }
   },
   methods: {
     ...mapMutations("storeGame", ["setTimeOver"]),
@@ -61,7 +62,6 @@ export default {
     setTimer() {
       this.timer = setInterval(() => {
         --this.countTimer;
-        this.wordSecond = whichWord(this.countTimer)
 
         if (this.countTimer === 0) this.timeIsOver();
         if (this.countTimer <= 10) this.setTimeWillRunOutSoon();

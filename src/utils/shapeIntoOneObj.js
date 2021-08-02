@@ -1,6 +1,6 @@
-const emptyObj = {}
-
 export const shapeIntoOneObj = arr => {
+  const emptyObj = {}
+
   arr.forEach(el => {
     if (!emptyObj[el.category_id]) {
       emptyObj[el.category_id] = { title: el.category.title }

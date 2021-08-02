@@ -27,8 +27,10 @@ const mutations = {
       const cluObj = shapeIntoOneObj(payload)
 
       const cluArr = convertObjToArr(cluObj)
+      
 
       const newArr = chooseCompleteQuestions(cluArr)
+
       state.questions = [...getFiveRandomItems(newArr)]
     }
   },
@@ -69,7 +71,7 @@ const mutations = {
 const actions = {
   fetchClues: ({ commit }) => {
     commit('setToggleDisableBtn', true)
-    GameAPI.getClues().then(data => commit('setQuestions',data)).finally(() => commit('setToggleDisableBtn', false))
+    GameAPI.getClues().then(data => commit('setQuestions', data)).finally(() => commit('setToggleDisableBtn', false))
   }
 }
 
