@@ -73,7 +73,7 @@ export default {
     },
     timeIsOver() {
       clearInterval(this.timer);
-      this.$emit("over", this.answer);
+      this.$emit("over");
       this.setTimeOver();
     },
     setTimeWillRunOutSoon() {
