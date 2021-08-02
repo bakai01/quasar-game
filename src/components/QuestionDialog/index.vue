@@ -5,7 +5,7 @@
         cost: {{ getCurrentQuestion.value }} points
       </div>
       <div :class="{ red: timeWillRunOutSoon }" class="text-h4 text-center">
-        Осталось: {{countTimer}} {{ wordSecond }}
+        Осталось: {{ countTimer }} {{ wordSecond }}
       </div>
 
       <p class="popup__content">{{ getCurrentQuestion.question }}</p>
@@ -35,7 +35,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { whichWord } from "../../utils/whichWord"
+import { whichWord } from "../../utils/whichWord";
 
 export default {
   name: "QuestionDialog",
@@ -48,11 +48,11 @@ export default {
   computed: {
     ...mapGetters("storeGame", ["getCurrentQuestion"]),
     wordSecond() {
-      let word = ""
+      let word = "";
 
-      word = whichWord(this.countTimer)
+      word = whichWord(this.countTimer);
 
-      return word
+      return word;
     }
   },
   methods: {

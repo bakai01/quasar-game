@@ -24,28 +24,28 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   data: () => ({
     prompt: true,
 
-      name: ''
+    name: ""
   }),
   methods: {
-    ...mapMutations('storeGame', ['setPlayerName']),
-    ...mapGetters('storeGame', ['getQuestions']),
-    ...mapActions('storeGame', ['fetchClues']),
+    ...mapMutations("storeUsers", ["setPlayerName"]),
+    ...mapGetters("storeGame", ["getQuestions"]),
+    ...mapActions("storeGame", ["fetchClues"]),
     playGame() {
-      if(this.$refs.playerRefName.validate()) {
-        this.$router.push('/game').catch(err => {})
-        localStorage.setItem('playerName', this.name)
-        this.setPlayerName(this.name)
+      if (this.$refs.playerRefName.validate()) {
+        this.$router.push("/game").catch(err => {});
+        localStorage.setItem("playerName", this.name);
+        this.setPlayerName(this.name);
       }
     }
   },
   mounted() {
-    if (!this.getQuestions.length) this.fetchClues()
+    if (!this.getQuestions.length) this.fetchClues();
   }
-}
+};
 </script>

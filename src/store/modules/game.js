@@ -12,12 +12,7 @@ const state = () => ({
   toggleDisableBtn: false,
   answerIsCorrect: null,
   idCorrectAnswers: [],
-  idWrongAnswers: [],
-  playerName: "",
-  totalAnswers: 0,
-  rightAnswers: 0,
-  wrongAnswers: 0,
-  points: 0,
+  idWrongAnswers: []
 })
 
 const mutations = {
@@ -29,7 +24,7 @@ const mutations = {
       const cluObj = shapeIntoOneObj(payload)
 
       const cluArr = convertObjToArr(cluObj)
-      
+
 
       const newArr = chooseCompleteQuestions(cluArr)
 
@@ -64,15 +59,7 @@ const mutations = {
       state.idWrongAnswers.push(payload.questionId)
     }
   },
-  setTimeOver: state => state.answerIsCorrect = 'over',
-  setPlayerName: (state, payload) => {
-    state.playerName = payload
-  },
-  plusPoints: (state, payload) => state.points += payload,
-  minusPoints: (state, payload) => state.points -= payload,
-  setTotalAnswers: state => state.totalAnswers++,
-  setRightAnswers: state => state.rightAnswers++,
-  setWrongAnswers: state => state.wrongAnswers++,
+  setTimeOver: state => state.answerIsCorrect = 'over'
 
 }
 
@@ -88,11 +75,6 @@ const getters = {
   getQuestions: state => state.questions,
   getCurrentQuestion: state => state.currentQuestion,
   getAnswerIsCorrect: state => state.answerIsCorrect,
-  getPoints: state => state.points,
-  getPlayerName: state => state.playerName,
-  getTotalAnswers: state => state.totalAnswers,
-  getRightAnswers: state => state.rightAnswers,
-  getWrongAnswers: state => state.wrongAnswers,
   getIdCorrectAnswers: state => state.idCorrectAnswers,
   getIdWrongAnswers: state => state.idWrongAnswers,
 

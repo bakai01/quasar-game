@@ -9,20 +9,20 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Stats',
+  name: "Stats",
   computed: {
-    ...mapGetters('storeGame', [
-      'getPoints',
-      'getPlayerName',
-      'getTotalAnswers',
-      'getRightAnswers',
-      'getWrongAnswers'
+    ...mapGetters("storeUsers", [
+      "getPlayerName",
+      "getPoints",
+      "getTotalAnswers",
+      "getRightAnswers",
+      "getWrongAnswers"
     ])
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

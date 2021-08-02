@@ -15,9 +15,8 @@ export default {
   },
   methods: {
     clickStart() {
-      this.$emit("eventFetchClick")
+      this.$emit("eventFetchClick");
     }
   }
-
-}
+};
 </script>

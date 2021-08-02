@@ -31,10 +31,10 @@ export default {
   computed: {
     ...mapGetters("storeGame", [
       "getQuestions",
-      "getPoints",
       "getIdCorrectAnswers",
       "getIdWrongAnswers"
-    ])
+    ]),
+    ...mapGetters("storeUsers", ["getPoints"])
   },
   methods: {
     ...mapActions("storeGame", ["fetchClues"]),
