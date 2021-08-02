@@ -5,7 +5,7 @@
         cost: {{ getCurrentQuestion.value }} points
       </div>
       <div :class="{ red: timeWillRunOutSoon }" class="text-h4 text-center">
-        Осталось: {{ `${countTimer} ${wordSecond}` }}
+        Осталось: {{countTimer}} {{ wordSecond }}
       </div>
 
       <p class="popup__content">{{ getCurrentQuestion.question }}</p>
@@ -41,14 +41,18 @@ export default {
   name: "QuestionDialog",
   data: () => ({
     answer: "",
-    countTimer: 15,
+    countTimer: 60,
     timer: null,
     timeWillRunOutSoon: false
   }),
   computed: {
     ...mapGetters("storeGame", ["getCurrentQuestion"]),
     wordSecond() {
-      return whichWord(this.countTimer)
+      let word = ""
+
+      word = whichWord(this.countTimer)
+
+      return word
     }
   },
   methods: {
