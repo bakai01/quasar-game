@@ -6,6 +6,7 @@ export const shapeIntoOneObj = arr => {
       emptyObj[el.category_id] = { title: el.category.title }
       emptyObj[el.category_id].clues = []
       emptyObj[el.category_id].clues.push({
+        id: el.id,
         question: el.question,
         answer: el.answer,
         value: el.value,
@@ -13,6 +14,7 @@ export const shapeIntoOneObj = arr => {
     }
     else {
       emptyObj[el.category_id].clues.push({
+        id: el.id,
         question: el.question,
         answer: el.answer,
         value: el.value,

@@ -1,1 +1,0 @@
-export const getFirstFiveElements = (arr) => arr.slice(0, 5)

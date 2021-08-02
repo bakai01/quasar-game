@@ -35,7 +35,7 @@ export default {
   methods: {
     ...mapMutations('storeGame', ['setPlayerName']),
     ...mapGetters('storeGame', ['getQuestions']),
-    ...mapActions('storeGame', ['fetchQuestions']),
+    ...mapActions('storeGame', ['fetchClues']),
     playGame() {
       if(this.$refs.playerRefName.validate()) {
         this.$router.push('/game').catch(err => {})
@@ -45,7 +45,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.getQuestions.length) this.fetchQuestions()
+    if (!this.getQuestions.length) this.fetchClues()
   }
 }
 </script>

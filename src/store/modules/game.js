@@ -68,8 +68,8 @@ const mutations = {
 
 const actions = {
   fetchClues: ({ commit }) => {
-
-    GameAPI.getClues().then(data => commit('setQuestions',data))
+    commit('setToggleDisableBtn', true)
+    GameAPI.getClues().then(data => commit('setQuestions',data)).finally(() => commit('setToggleDisableBtn', false))
   }
 }
 

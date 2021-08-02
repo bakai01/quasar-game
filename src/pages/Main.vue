@@ -47,7 +47,7 @@ export default {
     value: 0
   }),
   methods: {
-    ...mapActions("storeGame", ["fetchQuestions"]),
+    ...mapActions("storeGame", ["fetchClues"]),
     ...mapMutations("storeGame", [
       "setCurrentQuestion", 
       "removeQuestion", 
@@ -60,7 +60,7 @@ export default {
       "setWrongAnswers"
     ]),
     gameStart() {
-      if (!this.getQuestions.length) this.fetchQuestions()
+      if (!this.getQuestions.length) this.fetchClues()
     },
     gameStop() {
       this.setQuestions(false)
@@ -110,7 +110,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.getQuestions.length) this.fetchQuestions()
+    if (!this.getQuestions.length) this.fetchClues()
   },
   computed: {
     ...mapGetters("storeGame", [

@@ -32,9 +32,6 @@ export default {
     emitQuestion(categoryId, questionId, value) {
       this.$emit('choiceQuestion', { categoryId, questionId, value })
     }
-  },
-  mounted() {
-    this.fetchClues()
   }
 }
 </script>
