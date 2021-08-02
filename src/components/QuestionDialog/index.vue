@@ -41,7 +41,7 @@ export default {
   name: "QuestionDialog",
   data: () => ({
     answer: "",
-    countTimer: 60,
+    countTimer: 5,
     timer: null,
     timeWillRunOutSoon: false
   }),

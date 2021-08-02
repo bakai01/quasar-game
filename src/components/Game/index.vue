@@ -10,6 +10,10 @@
           class="game-row__btn"
           @click="emitQuestion(category.id, question.id, question.value)"
           :disabled="!question.value"
+          :class="{
+            rightAnswer: getIdCorrectAnswers.includes(question.id),
+            wrongAnswer: getIdWrongAnswers.includes(question.id)
+          }"
         >
           {{ question.value }}
         </button>
@@ -20,25 +24,29 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex"
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Game",
   computed: {
-    ...mapGetters('storeGame', ['getQuestions', 'getPoints'])
+    ...mapGetters("storeGame", [
+      "getQuestions",
+      "getPoints",
+      "getIdCorrectAnswers",
+      "getIdWrongAnswers"
+    ])
   },
   methods: {
     ...mapActions("storeGame", ["fetchClues"]),
     emitQuestion(categoryId, questionId, value) {
-      this.$emit('choiceQuestion', { categoryId, questionId, value })
+      this.$emit("choiceQuestion", { categoryId, questionId, value });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .game {
-
   &-row {
     display: flex;
     justify-content: space-between;
@@ -57,21 +65,21 @@ export default {
     }
 
     &__btn {
-      border: 1px solid rgb(128, 128, 128);
+      border: 1px solid darken($grey-12, 11);
       font-size: 1rem;
       cursor: pointer;
       margin: 1px;
       width: 70px;
       height: 70px;
-      background-color: $green-13;
-      transition: all .2s linear;
+      background-color: darken($grey-12, 11);
+      transition: all 0.2s linear;
 
       &:hover {
-        background-color: darken($green-13, 3);
+        background-color: darken($grey-12, 17);
       }
 
       &:active {
-        background-color: darken($green-13, 6);
+        background-color: darken($grey-12, 21);
       }
     }
   }
@@ -79,6 +87,22 @@ export default {
   &-point {
     text-align: end;
     padding-top: 25px;
+  }
+}
+
+.rightAnswer {
+  background-color: $green-13;
+
+  &:hover {
+    background-color: $green-13;
+  }
+}
+
+.wrongAnswer {
+  background-color: $pink-5;
+
+  &:hover {
+    background-color: $pink-5;
   }
 }
 </style>

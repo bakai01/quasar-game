@@ -11,6 +11,8 @@ const state = () => ({
   currentQuestion: {},
   toggleDisableBtn: false,
   answerIsCorrect: null,
+  idCorrectAnswers: [],
+  idWrongAnswers: [],
   playerName: "",
   totalAnswers: 0,
   rightAnswers: 0,
@@ -53,8 +55,14 @@ const mutations = {
 
     const rightAnswer = category.clues.find(question => question.id === payload.questionId).answer
 
-    if (modifyLine(rightAnswer) === modifyLine(payload.answer)) state.answerIsCorrect = true
-    else state.answerIsCorrect = false
+    if (modifyLine(rightAnswer) === modifyLine(payload.answer)) {
+      state.answerIsCorrect = true
+      state.idCorrectAnswers.push(payload.questionId)
+    }
+    else {
+      state.answerIsCorrect = false
+      state.idWrongAnswers.push(payload.questionId)
+    }
   },
   setTimeOver: state => state.answerIsCorrect = 'over',
   setPlayerName: (state, payload) => {
@@ -85,6 +93,8 @@ const getters = {
   getTotalAnswers: state => state.totalAnswers,
   getRightAnswers: state => state.rightAnswers,
   getWrongAnswers: state => state.wrongAnswers,
+  getIdCorrectAnswers: state => state.idCorrectAnswers,
+  getIdWrongAnswers: state => state.idWrongAnswers,
 
 }
 
