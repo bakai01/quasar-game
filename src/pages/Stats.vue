@@ -27,7 +27,7 @@ export default {
   methods: {
     ...mapActions("storeUsers", ["requestQuit"]),
     quitAcc() {
-      this.requestQuit()
+      this.requestQuit();
       this.$router.push("/auth").catch(err => {});
     }
   }
