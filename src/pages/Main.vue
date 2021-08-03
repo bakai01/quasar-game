@@ -110,9 +110,6 @@ export default {
       this.alert = true;
     }
   },
-  mounted() {
-    if (!this.getQuestions.length) this.fetchClues();
-  },
   computed: {
     ...mapGetters("storeGame", [
       "getToggleDisableBtn",
