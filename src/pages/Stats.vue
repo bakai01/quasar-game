@@ -5,11 +5,13 @@
     <p><strong>Total answered questions:</strong> {{ getTotalAnswers }}</p>
     <p><strong>Right answers:</strong> {{ getRightAnswers }}</p>
     <p><strong>Wrong answers:</strong> {{ getWrongAnswers }}</p>
+
+    <q-btn color="black" label="Quit" @click="quitAcc" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Stats",
@@ -21,6 +23,13 @@ export default {
       "getRightAnswers",
       "getWrongAnswers"
     ])
+  },
+  methods: {
+    ...mapActions("storeUsers", ["requestQuit"]),
+    quitAcc() {
+      this.requestQuit()
+      this.$router.push("/auth").catch(err => {});
+    }
   }
 };
 </script>

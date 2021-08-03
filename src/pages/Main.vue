@@ -55,12 +55,12 @@ export default {
       "isCorrectAnswer",
       "setQuestions"
     ]),
-    ...mapMutations("storeUsers", [
-      "plusPoints",
-      "minusPoints",
-      "setTotalAnswers",
-      "setRightAnswers",
-      "setWrongAnswers"
+    ...mapActions("storeUsers", [
+      "fetchPlusPoints",
+      "fetchMinusPoints",
+      "fetchTotalAnswers",
+      "fetchRightAnswers",
+      "fetchWrongAnswers"
     ]),
     gameStart() {
       if (!this.getQuestions.length) this.fetchClues();
@@ -79,13 +79,13 @@ export default {
     },
     incrementToStats() {
       if (this.getAnswerIsCorrect) {
-        this.plusPoints(this.value);
-        this.setTotalAnswers();
-        this.setRightAnswers();
+        this.fetchPlusPoints(this.value);
+        this.fetchTotalAnswers();
+        this.fetchRightAnswers();
       } else {
-        this.minusPoints(this.value);
-        this.setTotalAnswers();
-        this.setWrongAnswers();
+        this.fetchMinusPoints(this.value);
+        this.fetchTotalAnswers();
+        this.fetchWrongAnswers();
       }
     },
     closePopupQuestion(answer) {

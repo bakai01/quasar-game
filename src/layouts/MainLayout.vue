@@ -27,18 +27,20 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "MainLayout",
   methods: {
-    ...mapMutations("storeUsers", ["setPlayerName"])
+    ...mapActions("storeUsers", ["fetchAuth"]),
+    ...mapGetters("storeUsers", ["getPlayerName"])
   },
   mounted() {
-    if (!localStorage.getItem("playerName")) {
-      this.$router.push("/auth");
+    const playerName = JSON.parse(localStorage.getItem("currentAccount")).playerName
+    if (!playerName) {
+      this.$router.push("/auth").catch(err => {});
     } else {
-      this.setPlayerName(localStorage.getItem("playerName"));
+      this.fetchAuth(playerName);
       this.$router.push("/game").catch(err => {});
     }
   }

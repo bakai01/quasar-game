@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
@@ -33,13 +33,13 @@ export default {
     name: ""
   }),
   methods: {
-    ...mapMutations("storeUsers", ["setPlayerName"]),
+    ...mapActions("storeUsers", ["fetchAuth"]),
     ...mapGetters("storeGame", ["getQuestions"]),
     ...mapActions("storeGame", ["fetchClues"]),
     playGame() {
       if (this.$refs.playerRefName.validate()) {
+        this.fetchAuth(this.name);
         this.$router.push("/game").catch(err => {});
-        this.setPlayerName(this.name);
       }
     }
   },

@@ -18,7 +18,13 @@ const state = () => ({
 const mutations = {
   setToggleDisableBtn: (state, payload) => state.toggleDisableBtn = payload,
   setQuestions: (state, payload) => {
-    if (!payload) state.questions = []
+    if (!payload) {
+      state.questions = []
+      state.currentQuestion = {}
+      state.answerIsCorrect = null
+      state.idCorrectAnswers = []
+      state.idWrongAnswers = []
+    }
 
     else {
       const cluObj = shapeIntoOneObj(payload)

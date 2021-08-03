@@ -1,64 +1,96 @@
 
 const state = () => ({
-  users: [
-    {
-      playerName: "ZXC Dead inside 1000 - 7, Как же ты слаб))",
-      points: 5000,
-      rightAnswers: 10,
-      totalAnswers: 10,
-      wrongAnswers: 0
-    },
-    {
-      playerName: "Alan",
-      totalAnswers: 1,
-      rightAnswers: 1,
-      wrongAnswers: 0,
-      points: 400
-    },
-    {
-      playerName: "Petya",
-      totalAnswers: 3,
-      rightAnswers: 2,
-      wrongAnswers: 1,
-      points: 600
-    },
-    {
-      playerName: "Bart",
-      totalAnswers: 7,
-      rightAnswers: 5,
-      wrongAnswers: 2,
-      points: 2500
-    },
-    {
-      playerName: "Alesia",
-      totalAnswers: 10,
-      rightAnswers: 2,
-      wrongAnswers: 8,
-      points: 50000
-    },
-  ]
+  account: {
+    playerName: "",
+    points: 0,
+    rightAnswers: 0,
+    totalAnswers: 0,
+    wrongAnswers: 0
+  }
 })
 
 const mutations = {
-  setPlayerName: (state, payload) => {
-    localStorage.setItem("users", JSON.stringify(state.users))
-    state.playerName = payload
+  authMe: (state, payload) => {
+    const data = JSON.parse(localStorage.getItem("users"))
+    const isUserExist = data.find(user => user.playerName === payload)
+
+    if (isUserExist) {
+      state.account = { ...isUserExist }
+      localStorage.setItem("currentAccount", JSON.stringify(state.account))
+    }
+    else {
+      state.account = {
+        playerName: payload,
+        points: 0,
+        rightAnswers: 0,
+        totalAnswers: 0,
+        wrongAnswers: 0
+      }
+      data.push(state.account)
+      localStorage.setItem("users", JSON.stringify(data))
+      localStorage.setItem("currentAccount", JSON.stringify(state.account))
+    }
   },
-  plusPoints: (state, payload) => state.points += payload,
-  minusPoints: (state, payload) => state.points -= payload,
-  setTotalAnswers: state => state.totalAnswers++,
-  setRightAnswers: state => state.rightAnswers++,
-  setWrongAnswers: state => state.wrongAnswers++,
+  plusPoints: (state, payload) => state.account.points += payload,
+  minusPoints: (state, payload) => state.account.points -= payload,
+  setTotalAnswers: state => state.account.totalAnswers++,
+  setRightAnswers: state => state.account.rightAnswers++,
+  setWrongAnswers: state => state.account.wrongAnswers++,
 }
 
-const actions = {}
+const actions = {
+  fetchAuth: ({ commit }, payload) => commit("authMe", payload),
+  requestQuit: () => {
+    const emptyAcc = {
+      playerName: "",
+      points: 0,
+      rightAnswers: 0,
+      totalAnswers: 0,
+      wrongAnswers: 0
+    }
+
+    localStorage.setItem("currentAccount", JSON.stringify(emptyAcc))
+  },
+  updateCurrentAccount: ({ state }) => {
+    const data = JSON.parse(localStorage.getItem("users"))
+
+    data.forEach(user => {
+      if (user.playerName === state.account.playerName) {
+        user = Object.assign(user, state.account)
+      }
+    })
+
+    localStorage.setItem("users", JSON.stringify(data))
+    localStorage.setItem("currentAccount", JSON.stringify(state.account))
+  },
+  fetchPlusPoints: ({ commit, dispatch }, payload) => {
+    commit("plusPoints", payload)
+    dispatch("updateCurrentAccount")
+  },
+  fetchMinusPoints: ({ commit, dispatch }, payload) => {
+    commit("minusPoints", payload)
+    dispatch("updateCurrentAccount")
+  },
+  fetchTotalAnswers: ({ commit, dispatch }) => {
+    commit("setTotalAnswers")
+    dispatch("updateCurrentAccount")
+  },
+  fetchRightAnswers: ({ commit, dispatch }) => {
+    commit("setRightAnswers")
+    dispatch("updateCurrentAccount")
+  },
+  fetchWrongAnswers: ({ commit, dispatch }) => {
+    commit("setWrongAnswers")
+    dispatch("updateCurrentAccount")
+  }
+}
 
 const getters = {
-  getPlayerName:   state => state.playerName,
-  getPoints:       state => state.points,
-  getTotalAnswers: state => state.totalAnswers,
-  getRightAnswers: state => state.rightAnswers,
-  getWrongAnswers: state => state.wrongAnswers,
+  getPlayerName: state => state.account.playerName,
+  getPoints: state => state.account.points,
+  getTotalAnswers: state => state.account.totalAnswers,
+  getRightAnswers: state => state.account.rightAnswers,
+  getWrongAnswers: state => state.account.wrongAnswers,
 }
 
 export const storeUsers = {
