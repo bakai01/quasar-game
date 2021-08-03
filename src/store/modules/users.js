@@ -11,7 +11,7 @@ const state = () => ({
 
 const mutations = {
   authMe: (state, payload) => {
-    const data = JSON.parse(localStorage.getItem("users"))
+    const data = JSON.parse(localStorage.getItem("users")) || []
     const isUserExist = data.find(user => user.playerName === payload)
 
     if (isUserExist) {

@@ -36,7 +36,7 @@ export default {
     ...mapGetters("storeUsers", ["getPlayerName"])
   },
   mounted() {
-    const playerName = JSON.parse(localStorage.getItem("currentAccount")).playerName
+    const playerName = JSON.parse(localStorage.getItem("currentAccount")) && JSON.parse(localStorage.getItem("currentAccount")).playerName
     if (!playerName) {
       this.$router.push("/auth").catch(err => {});
     } else {
